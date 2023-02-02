@@ -1,8 +1,8 @@
-#Snap-in to notify the Part Owner of a ticket if the status transitions to “Awaiting Product Assist”
+# Snap-in to notify the Part Owner of a ticket if the status transitions to “Awaiting Product Assist”
 
 Tickets are stalling out in the “Awaiting Product Assist” stage because Part Owners are not being notified. This automation creates a timeline entry to notify the part owner(s) when the ticket status transitions to “Awaiting Product Assist”. 
 
-##Steps to run the snap-in:
+## Steps to run the snap-in:
 
 [Refer this Documentation for basic requirements and setup](https://docs.google.com/document/d/1U7_6TgE9P18NGkz_9Zb9bQiukQ0-KdjayvOxG28H4qU/edit#heading=h.ufym6jrip4vw)
 
