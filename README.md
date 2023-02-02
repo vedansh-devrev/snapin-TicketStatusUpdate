@@ -6,9 +6,9 @@ Tickets are stalling out in the “Awaiting Product Assist” stage because Part
 
 [Refer this Documentation for basic requirements and setup](https://docs.google.com/document/d/1U7_6TgE9P18NGkz_9Zb9bQiukQ0-KdjayvOxG28H4qU/edit#heading=h.ufym6jrip4vw)
 
--Only Devrev-PAT Connection is required for this snap in to install and deploy.
--Implement the Automation Interface, to receive webhook events.
--Use Datadog and Cloudwatch logs for debugging purposes.
+> Only Devrev-PAT Connection is required for this snap in to install and deploy.
+> Implement the Automation Interface, to receive webhook events.
+> Use Datadog and Cloudwatch logs for debugging purposes.
 	
 For a demo snap-in code (automation which creates a notification on github branch creation), refer to this repository.
 [Let's go to the repository](https://github.com/devrev/flow-lambda-poc)
