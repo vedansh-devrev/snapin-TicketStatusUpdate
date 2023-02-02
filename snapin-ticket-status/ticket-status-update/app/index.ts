@@ -43,7 +43,7 @@ export class App implements AutomationInterface {
 			headers: {
 				Authorization: token
 			},
-			redirect: 'follow'
+			//redirect: 'follow'
 		};
 
 		let params = {
