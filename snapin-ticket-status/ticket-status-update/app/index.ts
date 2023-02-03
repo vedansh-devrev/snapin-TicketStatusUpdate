@@ -23,7 +23,7 @@ export class App implements AutomationInterface {
 		await this.EventListener(events[0]);
 	}
 
-	async doDevrevPostAPICall(method: string, data: object, authorization: string) {
+	async createTimelineEntry(method: string, data: object, authorization: string) {
 		const url = API_BASE + method;
 		const resp = await fetch(url, {
 			method: 'POST',
@@ -114,7 +114,7 @@ export class App implements AutomationInterface {
 			// Checking status change and creating timeline entry request if required.
 
 			if (currStatus == "awaiting_product_assist" && oldStatus != "awaiting_product_assist" && workType == "ticket") {
-				const resp = await this.doDevrevPostAPICall(timelineEntryAPIMethodPath, timelineEntryJSON, devrevToken);
+				const resp = await this.createTimelineEntry(timelineEntryAPIMethodPath, timelineEntryJSON, devrevToken);
 
 				if (resp.ok) {
 					console.log("Successfully created timeline entry.");
