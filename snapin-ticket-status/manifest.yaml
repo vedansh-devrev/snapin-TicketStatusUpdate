@@ -18,16 +18,6 @@ event-sources:
       event_types:
         - work_updated
 
-globals:
-  - name: ticket_id
-    description: ID of the ticket which transitioned to another state.
-    devrev_field_type: id 
-    devrev_id_type:
-      - product 
-  - name: message 
-    description: Message to post on newly created work's timeline. 
-    devrev_field_type: tokens 
-
 functions:
   - name: ticket-status-update
     description: Function containing logic to create a timeline entry on ticket status change to "Awaiting Product Assist".

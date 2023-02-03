@@ -92,13 +92,12 @@ export class App implements AutomationInterface {
 		const partDetailsAPIMethodPath = 'parts.get';
 		const timelineEntryAPIMethodPath = 'timeline-entries.create';
 
-		const devrevPATforAuth = "eyJhbGciOiJSUzI1NiIsImlzcyI6Imh0dHBzOi8vYXV0aC10b2tlbi5kZXYuZGV2cmV2LWVuZy5haS8iLCJraWQiOiJzdHNfa2lkX3JzYSIsInR5cCI6IkpXVCJ9.eyJhdWQiOlsiamFudXMiXSwiZXhwIjoxNzY5ODU2MDk1LCJodHRwOi8vZGV2cmV2LmFpL2F1dGgwX3VzZXJfaWQiOiJnb29nbGUtb2F1dGgyfDExMDI1NjYxMDUwNDQ4NDU0MTg2NCIsImh0dHA6Ly9kZXZyZXYuYWkvZGV2b19kb24iOiJkb246aWRlbnRpdHk6ZHZydi11cy0xOmRldm8vOG00NmNwN1IiLCJodHRwOi8vZGV2cmV2LmFpL2Rldm9pZCI6IkRFVi04bTQ2Y3A3UiIsImh0dHA6Ly9kZXZyZXYuYWkvZGV2dWlkIjoiREVWVS0xIiwiaHR0cDovL2RldnJldi5haS9kaXNwbGF5bmFtZSI6ImktdmVkYW5zaC1zcml2YXN0YXZhIiwiaHR0cDovL2RldnJldi5haS9lbWFpbCI6ImktdmVkYW5zaC5zcml2YXN0YXZhQGRldnJldi5haSIsImh0dHA6Ly9kZXZyZXYuYWkvZnVsbG5hbWUiOiJWZWRhbnNoIFNyaXZhc3RhdmEiLCJodHRwOi8vZGV2cmV2LmFpL3Rva2VudHlwZSI6InVybjpkZXZyZXY6cGFyYW1zOm9hdXRoOnRva2VuLXR5cGU6cGF0IiwiaWF0IjoxNjc1MjQ4MDk1LCJpc3MiOiJodHRwczovL2F1dGgtdG9rZW4uZGV2LmRldnJldi1lbmcuYWkvIiwianRpIjoiZG9uOmlkZW50aXR5OmR2cnYtdXMtMTpkZXZvLzhtNDZjcDdSOnRva2VuLzR0Wm1qTG15Iiwib3JnX2lkIjoib3JnX1duUHhwR200NWVlRmFWWngiLCJzdWIiOiJkb246aWRlbnRpdHk6ZHZydi11cy0xOmRldm8vOG00NmNwN1I6ZGV2dS8xIn0.rXkX9CK80zfbamoGprZMpHeEYfWPHEZ4oj-5x6MQB9CrjO_fQaVVGZf7Br-6B6A3nyaWfdUkIKVkx4D6_7BagUZwgJaX76G45I0MRQCD-aX8i0dY5TkccInM0_3gDGw57nGtgA1jjIvQMyxs-T6I8fH6cF4SdbCx8Kj4bk2in8xv-_tlh72mNHdhZQE6laE8_JEG0uWCw8w0w1kfRLogMwrxFajD3pwBocqOGNxU0AgXDTeRT0fZ7PvBee3-fJBpo3InZXcO00CxMBJqg6MkQo0Hipk5QE0gqKSulb7Vglu0G6VNtxdiei19ncFlMhGine_hqle2Sbr8WY3W4d4yBw"
-
+		const devrevToken = event.input_data.keyrings["devrev"];
 		let owners_string;
 
 		//Fetching Part Owner Details using Part ID
 		try {
-			owners_string = await this.getPartOwners(partDetailsAPIMethodPath, part_id, devrevPATforAuth);
+			owners_string = await this.getPartOwners(partDetailsAPIMethodPath, part_id, devrevToken);
 
 		} catch (error) {
 			console.error('Error', error);
@@ -115,7 +114,7 @@ export class App implements AutomationInterface {
 			// Checking status change and creating timeline entry request if required.
 
 			if (currStatus == "awaiting_product_assist" && oldStatus != "awaiting_product_assist" && workType == "ticket") {
-				const resp = await this.doDevrevPostAPICall(timelineEntryAPIMethodPath, timelineEntryJSON, devrevPATforAuth);
+				const resp = await this.doDevrevPostAPICall(timelineEntryAPIMethodPath, timelineEntryJSON, devrevToken);
 
 				if (resp.ok) {
 					console.log("Successfully created timeline entry.");
