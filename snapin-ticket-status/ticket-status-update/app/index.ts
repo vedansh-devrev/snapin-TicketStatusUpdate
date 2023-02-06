@@ -7,7 +7,10 @@ import {
 
 
 const API_BASE = 'https://api.dev.devrev-eng.ai/';
-
+const DON_SERVICE_TYPES = ['identity', 'core', 'integration', 'commerce'];
+interface ComponentsMap {
+	[key: string]: string;
+}
 
 export class App implements AutomationInterface {
 
@@ -36,7 +39,31 @@ export class App implements AutomationInterface {
 		return resp;
 	}
 
+
 	async getPartOwners(method: string, partID: string, token: string) {
+
+		//parsing DonV2 to mention users in timeline comment body
+		function parseDonV2(donV2: string) {
+			const donV2Parts = donV2.split(':');
+			if (donV2Parts.length < 4) {
+				throw new Error(`Must have at least 4 parts: ${donV2}`);
+			}
+			if (donV2Parts[0] !== 'don') {
+				throw new Error(`Must have a valid don prefix: ${donV2}`);
+			}
+			if (!DON_SERVICE_TYPES.includes(donV2Parts[1])) {
+				throw new Error(`Must have a valid service map: ${donV2}`);
+			}
+			if (donV2Parts[2] !== 'dvrv-us-1') {
+				throw new Error(`Must have a valid partition: ${donV2}`);
+			}
+			const components = donV2Parts.slice(3);
+			return components.reduce((componentsMap: ComponentsMap, component: string) => {
+				const componentParts = component.split('/');
+				componentsMap[componentParts[0]] = componentParts[1];
+				return componentsMap;
+			}, {});
+		}
 
 		var requestOptions = {
 			method: 'GET',
@@ -60,9 +87,25 @@ export class App implements AutomationInterface {
 			.then((response) => (response.json()))
 			.then((result) => {
 				let str = "";
-				str = str + "@" + result.part.owned_by[0].display_name;
+
+				if ((result.part.owned_by).length == 0) {
+					return str;
+				}
+
+				const {
+					devo,
+					devu
+				} = parseDonV2(result.part.owned_by[0].id);
+				const mentionUser = `don:DEV-${devo}:dev_user:DEVU-${devu}`;
+				str = str + "<" + mentionUser + ">";
+
 				for (let i = 1; i < (result.part.owned_by).length; i++) {
-					str = str + ", @" + result.part.owned_by[i].display_name;
+					const {
+						devo,
+						devu
+					} = parseDonV2(result.part.owned_by[i].id);
+					const mentionUser = `don:DEV-${devo}:dev_user:DEVU-${devu}`;
+					str = str + ", <" + mentionUser + ">";
 				}
 				return str;
 			})
@@ -104,25 +147,31 @@ export class App implements AutomationInterface {
 		}
 
 		try {
-			// Data for Entry Request API
-			const timelineEntryJSON = {
-				object: ticket_id,
-				type: "timeline_comment",
-				body: "Hey, " + owners_string + ", this ticket moved to Product Assist stage and may need your attention. You are being notified because you are the part owner of this ticket."
-			}
 
-			// Checking status change and creating timeline entry request if required.
+			if (owners_string != "") {
 
-			if (currStatus == "awaiting_product_assist" && oldStatus != "awaiting_product_assist" && workType == "ticket") {
-				const resp = await this.createTimelineEntry(timelineEntryAPIMethodPath, timelineEntryJSON, devrevToken);
+				// Data for Entry Request API
 
-				if (resp.ok) {
-					console.log("Successfully created timeline entry.");
-				} else {
-					let body = await resp.text();
-					console.error("Error while creating timeline entry: ", resp.status, body);
+				const timelineEntryJSON = {
+					object: ticket_id,
+					type: "timeline_comment",
+					body: "Hey " + owners_string + ", this ticket moved to Product Assist stage and may need your attention. You are being notified because you are the part owner of this ticket."
+				}
+
+				// Checking status change and creating timeline entry request if required.
+
+				if (currStatus == "awaiting_product_assist" && oldStatus != "awaiting_product_assist" && workType == "ticket") {
+					const resp = await this.createTimelineEntry(timelineEntryAPIMethodPath, timelineEntryJSON, devrevToken);
+
+					if (resp.ok) {
+						console.log("Successfully created timeline entry.");
+					} else {
+						let body = await resp.text();
+						console.error("Error while creating timeline entry: ", resp.status, body);
+					}
 				}
 			}
+
 		} catch (error) {
 			console.error('Error: ', error);
 		}
