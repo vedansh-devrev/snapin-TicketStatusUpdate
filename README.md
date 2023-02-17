@@ -21,7 +21,6 @@ Since there is no dedicated documentation for web-hook events payload, use Cloud
 
 <details>
 <summary markdown="span">If you dont wanna go there</summary>
-<br>
 
 #### Devrev-CLI Authentication
 devrev profiles authenticate --env dev --org flow-test --usr i-vedansh.srivastava@devrev.ai (only once for a single session)
@@ -65,7 +64,7 @@ Open `snapin-TicketStatusUpdate/snapin-ticket-status/runsnap.sh` in your text ed
 cd snapin-ticket-status/
 bash runsnap.sh
 ```
-Every partition in script is a step of snap-in deployment in https://docs.google.com/document/d/1IcD_Tm3d8s9NRv4A-3RdGz58rdd2lQwOcp8xTAdWtj8/edit
+Every partition in script is a step of snap-in deployment in this [doc](https://docs.google.com/document/d/1IcD_Tm3d8s9NRv4A-3RdGz58rdd2lQwOcp8xTAdWtj8/edit)
 
 Running it like _sh runsnap.sh_ will most likely give an error.
 </details>
