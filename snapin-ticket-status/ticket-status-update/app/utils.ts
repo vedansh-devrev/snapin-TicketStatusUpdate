@@ -51,7 +51,7 @@ export async function getPartOwners(endpoint: string, devrevPATToken: string) {
 	let resp = await DevrevAPIRequest(endpoint, {
 		method: "GET",
 	}, devrevPATToken);
-    // Making a string of part owners
+	// Making a string of part owners
 	let partOwnersString = "";
 	if ((resp.part.owned_by).length == 0)
 		return partOwnersString;
