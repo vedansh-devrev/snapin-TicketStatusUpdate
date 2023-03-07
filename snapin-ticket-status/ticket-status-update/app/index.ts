@@ -34,9 +34,9 @@ export class App implements AutomationInterface {
 		const timelineEntryAPIMethodPath = 'timeline-entries.create';
 		// Secrets
 		const devrevPATToken = event.input_data.keyrings["devrev"];
-		//Fetching Part Owner Details using Part ID
+		// Fetching Part Owner Details using Part ID
 		// Appending GET parameters on the endpoint
-		let partOwners = await getPartOwners(partDetailsAPIMethodPath+`?id=${partID}`, devrevPATToken);
+		let partOwners = await getPartOwners(partDetailsAPIMethodPath + `?id=${partID}`, devrevPATToken);
 		try {
 			if (partOwners != "") {
 				const timelineEntryData = {
@@ -51,8 +51,7 @@ export class App implements AutomationInterface {
 						body: timelineEntryData,
 					}, devrevPATToken);
 				}
-			}
-			else
+			} else
 				console.log("No part owners to notify regarding the status change");
 		} catch (error) {
 			console.error('Error: ', error);
