@@ -1,7 +1,7 @@
 version: "1"
 
 name: "e2e_snap_in"
-description: "A snap-in to notify part owners on ticket status change"
+description: "A snap-in to notify part owners on a DevRev ticket status change to 'Awaiting Product Assist'"
 
 connections:
   - name: devrev
@@ -11,8 +11,8 @@ connections:
 
 event-sources:
   - name: devrev-webhook
-    description: Event coming from Devrev
-    display_name: Devrev
+    description: Event coming from DevRev
+    display_name: DevRev
     type: devrev-webhook
     config:
       event_types:
@@ -20,10 +20,10 @@ event-sources:
 
 functions:
   - name: ticket-status-update
-    description: Function containing logic to create a timeline entry on ticket status change to "Awaiting Product Assist".
+    description: Function to create a timeline entry on a DevRev ticket status change to "Awaiting Product Assist".
 
 automations:
-  - name: Create a timeline entry on ticket status change to "Awaiting Product Assist".
+  - name: Add_comment_on_DevRev_ticket_when_on_Product_Assist_requirement
     source: devrev-webhook
     event_types:
       - work_updated
